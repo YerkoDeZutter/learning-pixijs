@@ -1,0 +1,10 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+
+#testB{
+  width: 500px;
+  height: 500px;
+  background-color: #dd3f3f;
+}
