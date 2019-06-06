@@ -2,6 +2,8 @@
 
 const app = new PIXI.Application({
   //transparent:true,
+  width: window.innerWidth,
+  height: window.innerHeight,
   antialias: true
 });
 document.body.appendChild(app.view);
@@ -58,20 +60,16 @@ document.body.appendChild(app.view);
 
 
 // ------- make bloby circle -------
-    // just for fun, let's rotate mr rabbit a little
 
 const bezier = new PIXI.Graphics();
 
-
-let yOff = 0;
+let lineSize = 0.8, radiusSize = 200, speed = 0.005, yOff = 0;
 
 app.ticker.add(() => {
   bezier.clear();
   bezier.lineStyle(5, 0xAA0000, 1);
-//
+
  bezier.beginFill(0xFFFF00);
-//
-// // set the line style to have a width of 5 and set the color to red
 
 app.stage.addChild(bezier);
 
@@ -82,21 +80,18 @@ let F;
 
 let xOff = 0;
 
-//bezier.drawRect(-300,-300,600,600)
-// bezier.beginHole();
-
-for (var a = 0; a < Math.PI * 2; a += 0.5) {
-
-    let random = Math.random()*50;
+for (var a = 0; a < Math.PI * 2 + lineSize; a += lineSize) {
 
     let noice = noise.simplex2(xOff,yOff) * 50;
 
-    let r = 200 + noice;
+    let r = radiusSize + noice;
     let x = r * Math.cos(a);
     let y = r * Math.sin(a);
 
-    Cx = (r+r/(r/2)) * Math.cos(a-0.150);
-    Cy = (r+r/(r/2)) * Math.sin(a-0.150);
+    let CPP = lineSize/3
+
+    Cx = (r+r/(r/2)) * Math.cos(a-CPP);
+    Cy = (r+r/(r/2)) * Math.sin(a-CPP);
 
     if(a==0){
       F = {
@@ -108,7 +103,7 @@ for (var a = 0; a < Math.PI * 2; a += 0.5) {
 
       bezier.moveTo(x, y);
 
-    } else if (a+0.5 > Math.PI * 2) {
+    } else if (a > Math.PI * 2) {
       x = F.x;
       y = F.y;
       Cx = F.Cx;
@@ -123,13 +118,10 @@ for (var a = 0; a < Math.PI * 2; a += 0.5) {
     PCX =  x + (x - Cx);
     PCY =  y + (y - Cy);
 
-    xOff++
+    xOff+=1
   }
 
-  // bezier.endHole();
-  // bezier.endHole();
-
-  yOff += 0.005;
+  yOff += speed;
 
   });
 
